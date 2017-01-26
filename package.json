@@ -24,5 +24,7 @@
   "bugs": {
     "url": "https://github.com/drweaver/socket-control/issues"
   },
-  "homepage": "https://github.com/drweaver/socket-control#readme"
+  "homepage": "https://github.com/drweaver/socket-control#readme",
+   "dependencies" : { 
+    "pubnub" : "^4.3.3"
 }
