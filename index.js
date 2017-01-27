@@ -11,8 +11,7 @@ eventbus.on('socketcontrol.request', function(msg) {
    try {
       var sockets = typeof msg.socket == 'number' ? [msg.socket] : msg.socket;
       sockets.map( socket => {
-         var buffer = exec(__dirname+'/bin/switch.py '+socket+' '+msg.state, {timeout: 5000});
-         console.log(buffer.toString('utf8'));
+         exec(__dirname+'/bin/switch.py '+socket+' '+msg.state, {timeout: 5000,stdio:['ignore',1,2]});
       });
    } catch( err ) {
       console.error(err);
