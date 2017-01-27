@@ -9,7 +9,7 @@ pubnub.start();
 eventbus.on('socketcontrol.request', function(msg) {
    
    try {
-      var sockets = typeof msg.socket == 'number' || msg.socket == 'string' ? [msg.socket] : msg.socket;
+      var sockets = typeof msg.socket == 'number' || typeof msg.socket == 'string' ? [msg.socket] : msg.socket;
       sockets.map( socket => {
          exec(__dirname+'/bin/switch.py '+socket+' '+msg.state, {timeout: 5000,stdio:['ignore',1,2]});
       });
