@@ -1,4 +1,5 @@
 { 
     "subscribeKey": "<pubnub-sub-key>",
-    "publishKey": "<pubnub-pub-key>"
+    "publishKey": "<pubnub-pub-key>",
+    "uuid": "<device-uuid>"
 }
