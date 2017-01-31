@@ -3,7 +3,7 @@ process.title = 'socketcontrol';
 var exec = require('child_process').execSync;
 var mqtt = require('mqtt');
 
-var config = require('../etc/config.json');
+var config = require('./etc/config.json');
 
 // Create a client connection
 var client = mqtt.connect(config.mqttUrl);
