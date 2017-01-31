@@ -23,6 +23,7 @@ client.on('close', function() {
 client.on('message', function(topic, msg, packet) {
   var socket = topic.split(/\//)[1];
   if( socket && (msg==='on'||msg==='off') ) {
+     console.log("Switching "+msg+" socket " + socket);
    try {
       exec(__dirname+'/bin/switch.py '+socket+' '+msg.state, {timeout: 5000,stdio:['ignore',1,2]});
    } catch( err ) {
