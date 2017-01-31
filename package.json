@@ -28,6 +28,6 @@
   },
   "homepage": "https://github.com/drweaver/socket-control#readme",
    "dependencies" : { 
-    "pubnub" : "^4.3.3"
+    "mqtt": "^2.3.1"
    }
 }
