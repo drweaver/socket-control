@@ -1,22 +1,34 @@
 process.title = 'socketcontrol';
 
-var pubnub = require('./lib/pubnub.js');
-var eventbus = require('./lib/eventbus.js');
 var exec = require('child_process').execSync;
+var mqtt = require('mqtt');
 
-pubnub.start();
+var config = require('../etc/config.json');
 
-eventbus.on('socketcontrol.request', function(msg) {
-   
+// Create a client connection
+var client = mqtt.connect(config.mqttUrl);
+
+client.on('connect', function() { // When connected
+    console.info('MQTT: Successfully connected');
+    // subscribe to a topic
+    client.subscribe('socketcontrol/+');
+
+});
+
+client.on('close', function() {
+   console.info('MQTT: Connection closed') 
+});
+
+// when a message arrives, do something with it
+client.on('message', function(topic, msg, packet) {
+  var socket = topic.split(/\//)[1];
+  if( socket && (msg==='on'||msg==='off') ) {
    try {
-      var sockets = typeof msg.socket == 'number' || typeof msg.socket == 'string' ? [msg.socket] : msg.socket;
-      sockets.map( socket => {
-         exec(__dirname+'/bin/switch.py '+socket+' '+msg.state, {timeout: 5000,stdio:['ignore',1,2]});
-      });
+      exec(__dirname+'/bin/switch.py '+socket+' '+msg.state, {timeout: 5000,stdio:['ignore',1,2]});
    } catch( err ) {
       console.error(err);
       console.error("If you are missing the gpiozero package, run: npm run-script install-gpiozero");
       console.error("If you get an error related to access to /dev/mem, run as root or update firmware: npm rpi-update");
    }
-    
+  }
 });
