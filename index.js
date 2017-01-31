@@ -22,14 +22,14 @@ client.on('close', function() {
 // when a message arrives, do something with it
 client.on('message', function(topic, msg, packet) {
   var socket = topic.split(/\//)[1];
-  if( socket && (msg==='on'||msg==='off') ) {
-     console.log("Switching "+msg+" socket " + socket);
-   try {
-      exec(__dirname+'/bin/switch.py '+socket+' '+msg.state, {timeout: 5000,stdio:['ignore',1,2]});
-   } catch( err ) {
-      console.error(err);
-      console.error("If you are missing the gpiozero package, run: npm run-script install-gpiozero");
-      console.error("If you get an error related to access to /dev/mem, run as root or update firmware: npm rpi-update");
-   }
+  if( socket != 'undefined' && (msg=='on'||msg=='off') ) {
+      console.log("Switching "+msg+" socket " + socket);
+      try {
+         exec(__dirname+'/bin/switch.py '+socket+' '+msg, {timeout: 5000,stdio:['ignore',1,2]});
+      } catch( err ) {
+         console.error(err);
+         console.error("If you are missing the gpiozero package, run: npm run-script install-gpiozero");
+         console.error("If you get an error related to access to /dev/mem, run as root or update firmware: npm rpi-update");
+      }
   }
 });
