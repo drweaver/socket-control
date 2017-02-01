@@ -22,6 +22,10 @@ client.on('close', function() {
 
 // when a message arrives, do something with it
 client.on('message', function(topic, msg, packet) {
+  if( packet.retain ) {
+      console.info('Ignoring stale message: '+topic+' '+msg);
+      return;
+  }
   var socket = topic.split(/\//)[2];
   if( socket != 'undefined' && (msg=='on'||msg=='off') ) {
       console.log("Switching "+msg+" socket " + socket);
