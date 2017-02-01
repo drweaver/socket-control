@@ -1,4 +1,5 @@
 process.title = 'socketcontrol';
+var topic = 'home/socket/+/set';
 
 var exec = require('child_process').execSync;
 var mqtt = require('mqtt');
@@ -11,7 +12,7 @@ var client = mqtt.connect(config.mqttUrl);
 client.on('connect', function() { // When connected
     console.info('MQTT: Successfully connected');
     // subscribe to a topic
-    client.subscribe('socketcontrol/+');
+    client.subscribe(topic);
 
 });
 
@@ -21,7 +22,7 @@ client.on('close', function() {
 
 // when a message arrives, do something with it
 client.on('message', function(topic, msg, packet) {
-  var socket = topic.split(/\//)[1];
+  var socket = topic.split(/\//)[2];
   if( socket != 'undefined' && (msg=='on'||msg=='off') ) {
       console.log("Switching "+msg+" socket " + socket);
       try {
