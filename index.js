@@ -1,5 +1,5 @@
 process.title = 'socketcontrol';
-var topic = 'home/socket/+/set';
+var topicBase = 'home/socket/';
 
 var exec = require('child_process').execSync;
 var mqtt = require('mqtt');
@@ -12,12 +12,12 @@ var client = mqtt.connect(config.mqttUrl);
 client.on('connect', function() { // When connected
     console.info('MQTT: Successfully connected');
     // subscribe to a topic
-    client.subscribe(topic);
+    client.subscribe(topicBase+'+/set');
 
 });
 
 client.on('close', function() {
-   console.info('MQTT: Connection closed') 
+   console.info('MQTT: Connection closed'); 
 });
 
 // when a message arrives, do something with it
@@ -27,10 +27,11 @@ client.on('message', function(topic, msg, packet) {
       return;
   }
   var socket = topic.split(/\//)[2];
-  if( socket != 'undefined' && (msg=='on'||msg=='off') ) {
+  if( socket != 'undefined' && socket.search(/^[1-4]$/) != -1 && (msg=='on'||msg=='off') ) {
       console.log("Switching "+msg+" socket " + socket);
       try {
          exec(__dirname+'/bin/switch.py '+socket+' '+msg, {timeout: 5000,stdio:['ignore',1,2]});
+         client.publish(topicBase + socket, msg);
       } catch( err ) {
          console.error(err);
          console.error("If you are missing the gpiozero package, run: npm run-script install-gpiozero");
