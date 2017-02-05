@@ -31,7 +31,7 @@ client.on('message', function(topic, msg, packet) {
       console.log("Switching "+msg+" socket " + socket);
       try {
          exec(__dirname+'/bin/switch.py '+socket+' '+msg, {timeout: 5000,stdio:['ignore',1,2]});
-         client.publish(topicBase + socket, msg);
+         client.publish(topicBase + socket, msg, { retain: true} );
       } catch( err ) {
          console.error(err);
          console.error("If you are missing the gpiozero package, run: npm run-script install-gpiozero");
