@@ -31,7 +31,7 @@ sudo usermod -aG docker $(whoami)
 2. Run the socket-control container
 
 ```sh
-docker run --restart=always --privileged --add-host=mqtt:<IP FOR MQTT> -d --name socket-control handymoose/rpi:socket-control
+docker run --restart=always --privileged -e MQTT_URL=mqtt://<IP/name>:<port> -e MQTT_USERNAME=<user> -e MQTT_PASSWORD=<pass> -d --name socket-control handymoose/rpi:socket-control
 ```
 
 ### Native method
