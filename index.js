@@ -4,10 +4,11 @@ var topicBase = 'home/socket/';
 var exec = require('child_process').execSync;
 var mqtt = require('mqtt');
 
-var config = require('./etc/config.json');
+var url = process.env.MQTT_URL;
+var opts = { username: process.env.MQTT_USERNAME, password: process.env.MQTT_PASSWORD };
 
 // Create a client connection
-var client = mqtt.connect(config.mqttUrl);
+var client = mqtt.connect(url, opts);
 
 client.on('connect', function() { // When connected
     console.info('MQTT: Successfully connected');
